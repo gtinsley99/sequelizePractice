@@ -36,14 +36,12 @@ const Author = connection.define("Author", {
     }
 });
 
-Author.hasMany(Book, {
-    foreignKey: "authorId"
-});
+Author.hasMany(Book);
 Book.belongsTo(Author);
 
 const syncTables = () => {
     Author.sync()
-    Book.sync({alter: true});
+    Book.sync();
 };
 
 // Request to add a book to the db
@@ -54,6 +52,7 @@ app.post("/addbook", async (req, res) => {
             title: req.body.title,
             author: req.body.author,
             genre: req.body.genre,
+            AuthorId: req.body.AuthorId,
         });
     
         const successResponse = {
