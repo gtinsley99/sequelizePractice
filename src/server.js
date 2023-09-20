@@ -11,6 +11,8 @@ app.use(express.json());
 const { DataTypes } = require("sequelize");
 const connection = require("./db/connection");
 
+
+
 // Class on db entry info
 const Book = connection.define("Book", {
     title: {
@@ -26,8 +28,17 @@ const Book = connection.define("Book", {
     }
 });
 
+// Class on authors entry info
+const Author = connection.define("Author", {
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    }
+});
+
 const syncTables = () => {
     Book.sync();
+    Author.sync()
 };
 
 // Request to add a book to the db
@@ -200,6 +211,89 @@ app.put("/updatebookbytitle", async (req, res) => {
         res.status(501).json(errorResponse);
     }
 });
+
+
+
+
+
+// Routes for author table
+
+// Request to add a author to the author table
+app.post("/addauthor", async (req, res) => {
+    console.log(req.body);
+    try {
+        const author = await Author.create({
+            name: req.body.name,
+        });
+    
+        const successResponse = {
+            author: author,
+            message: "Author added"
+        };
+    
+        res.status(201).json(successResponse);
+    } catch (error) {
+        console.log(error);
+        const errorResponse = {
+            message: "Error occurred",
+            error: error,
+        };
+        res.status(501).json(errorResponse);
+    };
+});
+
+// Request to get all authors from author table
+app.get("/listallauthors", async (req, res) => {
+    try {
+        const listAllAuthors = await Author.findAll({});
+
+        const successResponse = {
+            message: "Success",
+            authors: listAllAuthors,
+        };
+        res.status(200).json(successResponse);
+    } catch (error) {
+        console.log(error);
+        const errorResponse = {
+            message: "Error occurred",
+            error: error,
+        };
+        res.status(501).json(errorResponse);
+    };
+});
+
+// Request to delete author from author table
+app.delete("/deleteauthor", async (req, res) => {
+    try {
+        const filter = { name: req.body.name};
+        const author = await Author.findOne({where: filter});
+        if (!author){
+            const noAuthorRes = {
+                success: false,
+                message: "Author not found",
+                name: req.body.name,
+            };
+            res.status(404).json(noAuthorRes);
+        } else {
+            await author.destroy();
+            const successResponse = {
+                message: "Author deleted",
+                author: author,
+            };
+            res.status(200).json(successResponse);
+        };
+    } catch (error) {
+        console.log(error);
+        const errorResponse = {
+            message: "Error occurred",
+            error: error,
+        };
+        res.status(501).json(errorResponse);
+    };
+});
+
+
+
 
 // http://localhost/health
 app.get("/health", (req, res) => {
