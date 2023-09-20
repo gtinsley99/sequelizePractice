@@ -42,8 +42,8 @@ Author.hasMany(Book, {
 Book.belongsTo(Author);
 
 const syncTables = () => {
-    Book.sync({alter: true});
     Author.sync()
+    Book.sync({alter: true});
 };
 
 // Request to add a book to the db
@@ -72,7 +72,7 @@ app.post("/addbook", async (req, res) => {
     };
 });
 
-// Request to get all books from db
+// Request to get all books from books table
 app.get("/listallbooks", async (req, res) => {
     try {
         const listAllBooks = await Book.findAll({});
@@ -92,7 +92,7 @@ app.get("/listallbooks", async (req, res) => {
     };
 });
 
-// Request to get one book from db by title
+// Request to get one book from book table by title
 app.get("/findbookbytitle", async (req, res) => {
     try {
         const filter = {title: req.body.title};
@@ -122,7 +122,7 @@ app.get("/findbookbytitle", async (req, res) => {
     }
 });
 
-// Request to delete book by title from db
+// Request to delete book by title from book table
 app.delete("/deletebookbytitle", async (req, res) => {
     try {
         const filter = { title: req.body.title};
@@ -152,7 +152,7 @@ app.delete("/deletebookbytitle", async (req, res) => {
     };
 });
 
-// Request to update author by title
+// Request to update author by title in book table
 app.put("/updateauthorbytitle", async (req, res) => {
     try {
         const filter = {title: req.body.title};
@@ -183,7 +183,7 @@ app.put("/updateauthorbytitle", async (req, res) => {
     }
 });
 
-// Request to update author/genre by title
+// Request to update author/genre by title in book table
 app.put("/updatebookbytitle", async (req, res) => {
     try {
         const filter = {title: req.body.title};
@@ -219,11 +219,9 @@ app.put("/updatebookbytitle", async (req, res) => {
 
 
 
-
-
 // Routes for author table
 
-// Request to add a author to the author table
+// Request to add an author to the author table
 app.post("/addauthor", async (req, res) => {
     console.log(req.body);
     try {
