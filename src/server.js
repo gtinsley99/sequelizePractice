@@ -9,7 +9,7 @@ const app = express();
 app.use(express.json());
 
 const { DataTypes } = require("sequelize");
-const connection = require(".db/connection");
+const connection = require("./db/connection");
 
 const Book = connection.define("Book", {
     title: {
@@ -28,6 +28,22 @@ const Book = connection.define("Book", {
 const syncTables = () => {
     Book.sync();
 };
+
+app.post("/addbook", async (req, res) => {
+    console.log(req.body);
+    const book = await Book.create({
+        title: req.body.title,
+        author: req.body.author,
+        genre: req.body.genre,
+    });
+
+    const successResponse = {
+        book: book,
+        message: "Book created"
+    };
+
+    res.status(201).json(successResponse);
+});
 
 // http://localhost/health
 app.get("/health", (req, res) => {
