@@ -25,11 +25,16 @@ const Book = connection.define("Book", {
     }
 });
 
+const syncTables = () => {
+    Book.sync();
+};
+
 // http://localhost/health
 app.get("/health", (req, res) => {
     res.status(200).json({message: "API is healthy."});
 });
 
 app.listen(port, () => {
+    syncTables();
     console.log(`App is listening on port ${port}.`);
 });
