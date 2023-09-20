@@ -1,7 +1,8 @@
+require("dotenv").config();
 const express = require("express");
 
 // 80 is default so not needed in local host url
-const port = 80;
+const port = process.env.PORT || 5001;
 
 const app = express();
 
