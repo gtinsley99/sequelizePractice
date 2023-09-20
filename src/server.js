@@ -30,7 +30,7 @@ const syncTables = () => {
     Book.sync();
 };
 
-// Request to add book to db
+// Request to add a book to the db
 app.post("/addbook", async (req, res) => {
     console.log(req.body);
     try {
