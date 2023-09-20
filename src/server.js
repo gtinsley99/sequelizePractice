@@ -36,8 +36,13 @@ const Author = connection.define("Author", {
     }
 });
 
+Author.hasMany(Book, {
+    foreignKey: "authorId"
+});
+Book.belongsTo(Author);
+
 const syncTables = () => {
-    Book.sync();
+    Book.sync({alter: true});
     Author.sync()
 };
 
