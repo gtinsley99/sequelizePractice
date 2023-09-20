@@ -8,6 +8,23 @@ const app = express();
 
 app.use(express.json());
 
+const { DataTypes } = require("sequelize");
+const connection = require(".db/connection");
+
+const Book = connection.define("Book", {
+    title: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false,
+    },
+    author: {
+        type: DataTypes.STRING
+    },
+    genre: {
+        type: DataTypes.STRING
+    }
+});
+
 // http://localhost/health
 app.get("/health", (req, res) => {
     res.status(200).json({message: "API is healthy."});
