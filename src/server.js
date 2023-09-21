@@ -5,6 +5,7 @@ const Book = require("./books/model");
 const Author = require("./authors/model");
 
 const bookRouter = require("./books/routes");
+const authorRouter = require("./authors/routes");
 
 // 80 is default so not needed in local host url
 const port = process.env.PORT || 5001;
@@ -16,6 +17,8 @@ app.use(express.json());
 // http://localhost/books/(allroutenames)
 app.use("/books", bookRouter);
 
+app.use("/authors", authorRouter);
+
 Author.hasMany(Book);
 Book.belongsTo(Author);
 
@@ -26,29 +29,7 @@ const syncTables = () => {
 
 // Routes for author table
 
-// Request to add an author to the author table
-app.post("/addauthor", async (req, res) => {
-    console.log(req.body);
-    try {
-        const author = await Author.create({
-            name: req.body.name,
-        });
-    
-        const successResponse = {
-            author: author,
-            message: "Author added"
-        };
-    
-        res.status(201).json(successResponse);
-    } catch (error) {
-        console.log(error);
-        const errorResponse = {
-            message: "Error occurred",
-            error: error,
-        };
-        res.status(501).json(errorResponse);
-    };
-});
+
 
 // Request to get all authors from author table
 app.get("/listallauthors", async (req, res) => {
