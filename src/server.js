@@ -23,13 +23,21 @@ app.use("/authors", authorRouter);
 
 app.use("/genres", genreRouter);
 
-Author.hasMany(Book);
-Book.belongsTo(Author);
+
 
 const syncTables = () => {
+    Author.hasMany(Book);
+    Book.belongsTo(Author);
+    Genre.hasMany(Book);
+    Book.belongsTo(Genre);
+
     Book.sync();
     Author.sync();
     Genre.sync();
+
+   
+
+  
 };
 
 // http://localhost/health
