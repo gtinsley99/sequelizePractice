@@ -86,11 +86,38 @@ const deleteBookByTitle = async (req, res) => {
             error: error,
         });
     };
-}
+};
+
+const updateAuthorbyTitle = async (req, res) => {
+    try {
+        const book = await Book.findOne({where: {title: req.body.title}});
+        if (!book){
+            res.status(404).json({
+                success: false,
+                message: "Book not found",
+                title: req.body.title,
+            });
+        } else {
+            book.author = req.body.author;
+            await book.save();
+            res.status(200).json({
+                message: "Author updated",
+                book: book,
+            });
+        };
+    } catch (error) {
+        console.log(error);
+        res.status(501).json({
+            message: "Error occurred",
+            error: error,
+        });
+    }
+};
 
 module.exports = {
     addBook,
     listAllBooks,
     findBookbyTitle,
     deleteBookByTitle,
+    updateAuthorbyTitle,
 }
