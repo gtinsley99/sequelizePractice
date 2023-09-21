@@ -30,27 +30,6 @@ const syncTables = () => {
 // Routes for author table
 
 
-
-// Request to get all authors from author table
-app.get("/listallauthors", async (req, res) => {
-    try {
-        const listAllAuthors = await Author.findAll({});
-
-        const successResponse = {
-            message: "Success",
-            authors: listAllAuthors,
-        };
-        res.status(200).json(successResponse);
-    } catch (error) {
-        console.log(error);
-        const errorResponse = {
-            message: "Error occurred",
-            error: error,
-        };
-        res.status(501).json(errorResponse);
-    };
-});
-
 // Request to delete author from author table
 app.delete("/deleteauthor", async (req, res) => {
     try {
