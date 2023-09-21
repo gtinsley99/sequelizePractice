@@ -3,6 +3,7 @@ const express = require("express");
 
 const Book = require("./books/model");
 const Author = require("./authors/model");
+const Genre = require("./genres/model");
 
 const bookRouter = require("./books/routes");
 const authorRouter = require("./authors/routes");
@@ -23,8 +24,9 @@ Author.hasMany(Book);
 Book.belongsTo(Author);
 
 const syncTables = () => {
-    Author.sync()
     Book.sync();
+    Author.sync();
+    Genre.sync();
 };
 
 // http://localhost/health
