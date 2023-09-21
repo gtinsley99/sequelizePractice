@@ -27,42 +27,6 @@ const syncTables = () => {
     Book.sync();
 };
 
-// Routes for author table
-
-
-// Request to delete author from author table
-app.delete("/deleteauthor", async (req, res) => {
-    try {
-        const filter = { name: req.body.name};
-        const author = await Author.findOne({where: filter});
-        if (!author){
-            const noAuthorRes = {
-                success: false,
-                message: "Author not found",
-                name: req.body.name,
-            };
-            res.status(404).json(noAuthorRes);
-        } else {
-            await author.destroy();
-            const successResponse = {
-                message: "Author deleted",
-                author: author,
-            };
-            res.status(200).json(successResponse);
-        };
-    } catch (error) {
-        console.log(error);
-        const errorResponse = {
-            message: "Error occurred",
-            error: error,
-        };
-        res.status(501).json(errorResponse);
-    };
-});
-
-
-
-
 // http://localhost/health
 app.get("/health", (req, res) => {
     res.status(200).json({message: "API is healthy."});
