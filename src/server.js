@@ -2,8 +2,12 @@ require("dotenv").config();
 const express = require("express");
 
 const Book = require("./books/model");
+const Author = require("./authors/model");
+const Genre = require("./genres/model");
 
 const bookRouter = require("./books/routes");
+const authorRouter = require("./authors/routes");
+const genreRouter = require("./genres/routes");
 
 // 80 is default so not needed in local host url
 const port = process.env.PORT || 5001;
@@ -15,8 +19,25 @@ app.use(express.json());
 // http://localhost/books/(allroutenames)
 app.use("/books", bookRouter);
 
+app.use("/authors", authorRouter);
+
+app.use("/genres", genreRouter);
+
+
+
 const syncTables = () => {
-    Book.sync();
+    Author.hasMany(Book);
+    Book.belongsTo(Author);
+    Genre.hasMany(Book);
+    Book.belongsTo(Genre);
+
+    Book.sync({alter: true});
+    Author.sync();
+    Genre.sync();
+
+   
+
+  
 };
 
 // http://localhost/health
