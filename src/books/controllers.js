@@ -7,14 +7,20 @@ const {addAuthor} = require("../authors/controllers");
 const addBook = async (req, res) => {
     console.log(req.body);
     try {
-        const genre = await Genre.findOne({where: {genre: req.body.genre}});
-        if (genre.id === null){
-            addGenre;
+        let genre = await Genre.findOne({where: {genre: req.body.genre}});
+        console.log(genre);
+        if (!genre){
+            genre = await Genre.create({
+                genre: req.body.genre
+            });
         };
         console.log("genre:", genre);
-        const author = await Author.findOne({where: {name: req.body.author}});
-        if (author.id === null){
-            addAuthor;
+        let author = await Author.findOne({where: {name: req.body.author}});
+        console.log(author);
+        if (!author){
+            author = await Author.create({
+                name: req.body.author
+            });
         }
         console.log("author:", author);
         const book = await Book.create({
