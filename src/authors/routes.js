@@ -1,7 +1,6 @@
 const {Router} = require("express");
 const authorRouter = Router();
-const Author = require("./model");
-const {addAuthor, listAllAuthors} = require("./controllers");
+const {addAuthor, listAllAuthors, deleteAuthor} = require("./controllers");
 
 // Request to add an author
 authorRouter.post("/addauthor", addAuthor);
@@ -10,29 +9,6 @@ authorRouter.post("/addauthor", addAuthor);
 authorRouter.get("/listallauthors", listAllAuthors);
 
 // Request to delete author from author table
-authorRouter.delete("/deleteauthor", async (req, res) => {
-    try {
-        const author = await Author.findOne({where: {name: req.body.name}});
-        if (!author){
-            res.status(404).json({
-                success: false,
-                message: "Author not found",
-                name: req.body.name,
-            });
-        } else {
-            await author.destroy();
-            res.status(200).json({
-                message: "Author deleted",
-                author: author,
-            });
-        };
-    } catch (error) {
-        console.log(error);
-        res.status(501).json({
-            message: "Error occurred",
-            error: error,
-        });
-    };
-});
+authorRouter.delete("/deleteauthor", deleteAuthor);
 
 module.exports = authorRouter;
