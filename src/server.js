@@ -12,6 +12,7 @@ const app = express();
 
 app.use(express.json());
 
+// http://localhost/books/(allroutenames)
 app.use("/books", bookRouter);
 
 const syncTables = () => {

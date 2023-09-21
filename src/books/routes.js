@@ -1,52 +1,13 @@
 const { Router } = require("express");
 const bookRouter = Router();
 const Book = require("./model");
+const {addBook, listAllBooks} = require("./controllers");
 
 // Request to add a book to the db
-bookRouter.post("/addbook", async (req, res) => {
-    console.log(req.body);
-    try {
-        const book = await Book.create({
-            title: req.body.title,
-            author: req.body.author,
-            genre: req.body.genre,
-        });
-    
-        const successResponse = {
-            book: book,
-            message: "Book created"
-        };
-    
-        res.status(201).json(successResponse);
-    } catch (error) {
-        console.log(error);
-        const errorResponse = {
-            message: "Error occurred",
-            error: error,
-        };
-        res.status(501).json(errorResponse);
-    };
-});
+bookRouter.post("/addbook", addBook);
 
 // Request to get all books from db
-bookRouter.get("/listallbooks", async (req, res) => {
-    try {
-        const listAllBooks = await Book.findAll({});
-
-        const successResponse = {
-            message: "Success",
-            books: listAllBooks,
-        };
-        res.status(200).json(successResponse);
-    } catch (error) {
-        console.log(error);
-        const errorResponse = {
-            message: "Error occurred",
-            error: error,
-        };
-        res.status(501).json(errorResponse);
-    };
-});
+bookRouter.get("/listallbooks", listAllBooks);
 
 // Request to get one book from db by title
 bookRouter.get("/findbookbytitle", async (req, res) => {
