@@ -9,20 +9,16 @@ authorRouter.post("/addauthor", async (req, res) => {
         const author = await Author.create({
             name: req.body.name,
         });
-    
-        const successResponse = {
+        res.status(201).json({
             author: author,
             message: "Author added"
-        };
-    
-        res.status(201).json(successResponse);
+        });
     } catch (error) {
         console.log(error);
-        const errorResponse = {
+        res.status(501).json({
             message: "Error occurred",
             error: error,
-        };
-        res.status(501).json(errorResponse);
+        });
     };
 });
 
@@ -30,19 +26,16 @@ authorRouter.post("/addauthor", async (req, res) => {
 authorRouter.get("/listallauthors", async (req, res) => {
     try {
         const listAllAuthors = await Author.findAll({});
-
-        const successResponse = {
+        res.status(200).json({
             message: "Success",
             authors: listAllAuthors,
-        };
-        res.status(200).json(successResponse);
+        });
     } catch (error) {
         console.log(error);
-        const errorResponse = {
+        res.status(501).json({
             message: "Error occurred",
             error: error,
-        };
-        res.status(501).json(errorResponse);
+        });
     };
 });
 
