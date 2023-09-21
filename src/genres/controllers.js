@@ -44,7 +44,24 @@ const deleteGenre = async (req, res) => {
     };
 };
 
+const getAllGenres = async (req, res) => {
+    try {
+        const getAllGenres = await Genre.findAll({});
+        res.status(200).json({
+            message: "Success",
+            genres: getAllGenres,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(501).json({
+            message: "Error occurred",
+            error: error,
+        });
+    };
+};
+
 module.exports = {
     addGenre,
     deleteGenre,
+    getAllGenres,
 }
