@@ -7,6 +7,7 @@ const Genre = require("./genres/model");
 
 const bookRouter = require("./books/routes");
 const authorRouter = require("./authors/routes");
+const genreRouter = require("./genres/routes");
 
 // 80 is default so not needed in local host url
 const port = process.env.PORT || 5001;
@@ -19,6 +20,8 @@ app.use(express.json());
 app.use("/books", bookRouter);
 
 app.use("/authors", authorRouter);
+
+app.use("/genres", genreRouter);
 
 Author.hasMany(Book);
 Book.belongsTo(Author);
