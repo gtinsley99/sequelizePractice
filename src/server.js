@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 
 const Book = require("./books/model");
+const Author = require("./authors/model");
 
 const bookRouter = require("./books/routes");
 
@@ -14,14 +15,6 @@ app.use(express.json());
 
 // http://localhost/books/(allroutenames)
 app.use("/books", bookRouter);
-
-// Class on authors entry info
-const Author = connection.define("Author", {
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    }
-});
 
 Author.hasMany(Book);
 Book.belongsTo(Author);
