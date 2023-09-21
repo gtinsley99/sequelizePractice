@@ -37,7 +37,7 @@ const listAllBooks = async (req, res) => {
     };
 };
 
-const findBookbyTitle = async (req, res) => {
+const findBookByTitle = async (req, res) => {
     try {
         const book = await Book.findOne({where: {title: req.body.title}});
 
@@ -87,7 +87,7 @@ const deleteBookByTitle = async (req, res) => {
     };
 };
 
-const updateAuthorbyTitle = async (req, res) => {
+const updateAuthorByTitle = async (req, res) => {
     try {
         const book = await Book.findOne({where: {title: req.body.title}});
         if (!book){
@@ -145,8 +145,8 @@ const updateBookByTitle = async (req, res) => {
 module.exports = {
     addBook,
     listAllBooks,
-    findBookbyTitle,
+    findBookByTitle,
     deleteBookByTitle,
-    updateAuthorbyTitle,
+    updateAuthorByTitle,
     updateBookByTitle,
 }
