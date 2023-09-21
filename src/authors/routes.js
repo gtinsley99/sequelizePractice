@@ -1,27 +1,13 @@
 const {Router} = require("express");
 const authorRouter = Router();
 const Author = require("./model");
-const {addAuthor} = require("./controllers");
+const {addAuthor, listAllAuthors} = require("./controllers");
 
 // Request to add an author
 authorRouter.post("/addauthor", addAuthor);
 
 // Request to get all authors from author table
-authorRouter.get("/listallauthors", async (req, res) => {
-    try {
-        const listAllAuthors = await Author.findAll({});
-        res.status(200).json({
-            message: "Success",
-            authors: listAllAuthors,
-        });
-    } catch (error) {
-        console.log(error);
-        res.status(501).json({
-            message: "Error occurred",
-            error: error,
-        });
-    };
-});
+authorRouter.get("/listallauthors", listAllAuthors);
 
 // Request to delete author from author table
 authorRouter.delete("/deleteauthor", async (req, res) => {
