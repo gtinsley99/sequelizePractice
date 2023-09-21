@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const bookRouter = Router();
+const Book = require("./model");
 
 // Request to add a book to the db
 bookRouter.post("/addbook", async (req, res) => {

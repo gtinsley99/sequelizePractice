@@ -1,6 +1,8 @@
 require("dotenv").config();
 const express = require("express");
 
+const Book = require("./books/model");
+
 const bookRouter = require("./books/routes");
 
 // 80 is default so not needed in local host url
@@ -11,24 +13,6 @@ const app = express();
 app.use(express.json());
 
 app.use("/books", bookRouter);
-
-const { DataTypes } = require("sequelize");
-const connection = require("./db/connection");
-
-// Class on db entry info
-const Book = connection.define("Book", {
-    title: {
-        type: DataTypes.STRING,
-        unique: true,
-        allowNull: false,
-    },
-    author: {
-        type: DataTypes.STRING
-    },
-    genre: {
-        type: DataTypes.STRING
-    }
-});
 
 const syncTables = () => {
     Book.sync();
