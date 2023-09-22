@@ -178,6 +178,21 @@ const getBooksByAuthor = async (req, res) => {
     };
 };
 
+const deleteAllBooks = async (req, res) => {
+    try {
+        await Book.destroy({where: {}});
+            res.status(200).json({
+                message: "All books deleted",
+            });
+        } catch (error) {
+        console.log(error);
+        res.status(501).json({
+            message: "Error occurred",
+            error: error,
+        });
+    };
+};
+
 module.exports = {
     addBook,
     listAllBooks,
@@ -186,4 +201,5 @@ module.exports = {
     updateAuthorByTitle,
     updateBookByTitle,
     getBooksByAuthor,
+    deleteAllBooks,
 }
