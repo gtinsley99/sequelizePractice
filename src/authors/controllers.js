@@ -1,4 +1,5 @@
 const Author = require("./model");
+const Book = require("../books/model");
 
 const addAuthor = async (req, res) => {
     console.log(req.body);
@@ -60,8 +61,28 @@ const deleteAuthor = async (req, res) => {
     };
 };
 
+const getAuthor = async (req, res) => {
+    try {
+        const getAuthor = await Author.findOne({where: {name: req.body.name}});
+        let id = getAuthor.id
+        const getBooks = await Book.findAll({where: {AuthorId: id}})
+        res.status(200).json({
+            message: "Success",
+            author: getAuthor.name,
+            books: getBooks,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(501).json({
+            message: "Error occurred",
+            error: error,
+        });
+    };
+};
+
 module.exports = {
     addAuthor,
     listAllAuthors,
     deleteAuthor,
+    getAuthor,
 }
