@@ -201,6 +201,36 @@ const deleteAllBooks = async (req, res) => {
   }
 };
 
+const getBookParamTitle =  async (req, res) => {
+  try {
+    const books = await Book.findOne({ where: {title: req.params["title"]} });
+    if (!books) {
+      res.status(404).json({
+        success: false,
+        message: "Book not found",
+        author: req.params["title"],
+      });
+    } else {
+      let authorId = books.AuthorId;
+      const getAuthor = await Author.findOne({ where: { id: authorId } });
+      let genreId = books.GenreId;
+      const getGenre = await Genre.findOne({where: {id: genreId}});
+      res.status(200).json({
+        message: "Success",
+        book: req.params["title"],
+        author: getAuthor.name,
+        genre: getGenre.genre,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(501).json({
+      message: "Error occurred",
+      error: error,
+    });
+  }
+};
+
 module.exports = {
   addBook,
   listAllBooks,
@@ -210,4 +240,5 @@ module.exports = {
   updateBookByTitle,
   getBooksByAuthor,
   deleteAllBooks,
+  getBookParamTitle,
 };
