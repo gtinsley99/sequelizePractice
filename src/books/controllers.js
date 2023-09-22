@@ -6,7 +6,6 @@ const addBook = async (req, res) => {
   console.log(req.body);
   try {
     let genre = await Genre.findOne({ where: { genre: req.body.genre } });
-    console.log(genre);
     if (!genre) {
       genre = await Genre.create({
         genre: req.body.genre,
@@ -14,7 +13,6 @@ const addBook = async (req, res) => {
     }
     console.log("genre:", genre);
     let author = await Author.findOne({ where: { name: req.body.author } });
-    console.log(author);
     if (!author) {
       author = await Author.create({
         name: req.body.author,
@@ -143,14 +141,24 @@ const updateBookByTitle = async (req, res) => {
         title: req.body.title,
       });
     } else {
-      if (req.body.newauthor !== undefined){
-        author = await Author.findOne({where: {name: req.body.newauthor}});
+      if (req.body.newauthor !== undefined) {
+        author = await Author.findOne({ where: { name: req.body.newauthor } });
+        if (!author) {
+          author = await Author.create({
+            name: req.body.newauthor,
+          });
+        }
         author = author.id;
-      };
-      if (req.body.newgenre !== undefined){
-      genre = await Genre.findOne({where: {genre: req.body.newgenre}});
-      genre = genre.id;
-      };
+      }
+      if (req.body.newgenre !== undefined) {
+        genre = await Genre.findOne({ where: { genre: req.body.newgenre } });
+        if (!genre) {
+          genre = await Genre.create({
+            genre: req.body.newgenre,
+          });
+        }
+        genre = genre.id;
+      }
       await book.update({
         title: req.body.newtitle,
         AuthorId: author,
@@ -212,9 +220,9 @@ const deleteAllBooks = async (req, res) => {
   }
 };
 
-const getBookParamTitle =  async (req, res) => {
+const getBookParamTitle = async (req, res) => {
   try {
-    const books = await Book.findOne({ where: {title: req.params["title"]} });
+    const books = await Book.findOne({ where: { title: req.params["title"] } });
     if (!books) {
       res.status(404).json({
         success: false,
@@ -225,7 +233,7 @@ const getBookParamTitle =  async (req, res) => {
       let authorId = books.AuthorId;
       const getAuthor = await Author.findOne({ where: { id: authorId } });
       let genreId = books.GenreId;
-      const getGenre = await Genre.findOne({where: {id: genreId}});
+      const getGenre = await Genre.findOne({ where: { id: genreId } });
       res.status(200).json({
         message: "Success",
         book: req.params["title"],
