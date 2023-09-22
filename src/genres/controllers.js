@@ -72,8 +72,7 @@ const getGenre = async (req, res) => {
         genre: req.body.genre,
       });
     } else {
-      let id = getGenre.id;
-      const getBooks = await Book.findAll({ where: { GenreId: id } });
+      const getBooks = await Book.findAll({ where: { GenreId: getGenre.id } });
       res.status(200).json({
         message: "Success",
         genre: getGenre,
