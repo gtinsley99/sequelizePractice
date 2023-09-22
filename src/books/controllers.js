@@ -198,8 +198,7 @@ const getBooksByAuthor = async (req, res) => {
         author: req.body.author,
       });
     } else {
-      let id = author.id;
-      const listAllBooks = await Book.findAll({ where: { AuthorId: id } });
+      const listAllBooks = await Book.findAll({ where: { AuthorId: author.id } });
       res.status(200).json({
         message: "Success",
         books: listAllBooks,
@@ -239,10 +238,8 @@ const getBookParamTitle = async (req, res) => {
         author: req.params["title"],
       });
     } else {
-      let authorId = books.AuthorId;
-      const getAuthor = await Author.findOne({ where: { id: authorId } });
-      let genreId = books.GenreId;
-      const getGenre = await Genre.findOne({ where: { id: genreId } });
+      const getAuthor = await Author.findOne({ where: { id: books.AuthorId } });
+      const getGenre = await Genre.findOne({ where: { id: books.GenreId } });
       res.status(200).json({
         message: "Success",
         book: req.params["title"],
