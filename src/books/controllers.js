@@ -113,7 +113,16 @@ const updateAuthorByTitle = async (req, res) => {
         title: req.body.title,
       });
     } else {
-      book.author = req.body.author;
+      let author = await Author.findOne({where: {name: req.body.author}});
+      if (!author) {
+        author = await Author.create({
+          name: req.body.author
+        });
+      };
+      author = author.id;
+      book.update({
+        AuthorId: author,
+      });
       await book.save();
       res.status(200).json({
         message: "Author updated",
