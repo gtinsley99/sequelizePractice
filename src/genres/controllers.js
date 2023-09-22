@@ -1,4 +1,5 @@
 const Genre = require("./model");
+const Book = require("../books/model");
 
 const addGenre = async (req, res) => {
     try {
@@ -60,8 +61,28 @@ const getAllGenres = async (req, res) => {
     };
 };
 
+const getGenre =async (req, res) => {
+    try {
+        const getGenre = await Genre.findOne({where: {genre: req.body.genre}});
+        let id = getGenre.id;
+        const getBooks = await Book.findAll({where: {GenreId: id}});
+        res.status(200).json({
+            message: "Success",
+            genre: getGenre,
+            books: getBooks,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(501).json({
+            message: "Error occurred",
+            error: error,
+        });
+    };
+};
+
 module.exports = {
     addGenre,
     deleteGenre,
     getAllGenres,
+    getGenre,
 }
