@@ -72,8 +72,7 @@ const getAuthor = async (req, res) => {
         name: req.body.name,
       });
     } else {
-      let id = getAuthor.id;
-      const getBooks = await Book.findAll({ where: { AuthorId: id } });
+      const getBooks = await Book.findAll({ where: { AuthorId: getAuthor.id } });
       res.status(200).json({
         message: "Success",
         author: getAuthor.name,
