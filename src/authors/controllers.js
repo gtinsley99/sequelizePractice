@@ -89,7 +89,7 @@ const getAuthor = async (req, res) => {
   }
 };
 
-const getAuthorParamName =async (req, res) => {
+const getAuthorParamName = async (req, res) => {
     try {
       const author = await Author.findOne({ where: {name: req.params["name"]} });
       if (!author) {
@@ -106,7 +106,6 @@ const getAuthorParamName =async (req, res) => {
         ]});
         const allGenres = getBooks.map((element) => element.GenreId);
         const getGenres = await Genre.findAll({where:{id: allGenres}});
-        console.log(getGenres);
         res.status(200).json({
           message: "Success",
           author: req.params["name"],

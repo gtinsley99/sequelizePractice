@@ -1,6 +1,6 @@
 const {Router} = require("express");
 const genreRouter = Router();
-const {addGenre, deleteGenre, getAllGenres, getGenre} = require("./controllers");
+const {addGenre, deleteGenre, getAllGenres, getGenre, getGenreParamGenre} = require("./controllers");
 
 // Route to add genre
 genreRouter.post("/addgenre", addGenre);
@@ -13,6 +13,9 @@ genreRouter.get("/getallgenres", getAllGenres);
 
 // Route to get one genre and related books
 genreRouter.get("/getgenre", getGenre);
+
+// Route to find all books and authors of genre
+genreRouter.get("/getallingenre/:genre", getGenreParamGenre)
 
 
 module.exports = genreRouter;

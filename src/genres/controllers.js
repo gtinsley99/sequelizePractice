@@ -1,5 +1,6 @@
 const Genre = require("./model");
 const Book = require("../books/model");
+const Author = require("../authors/model");
 
 const addGenre = async (req, res) => {
   try {
@@ -88,9 +89,43 @@ const getGenre = async (req, res) => {
   }
 };
 
+const getGenreParamGenre = async (req, res) => {
+  try {
+    const genre = await Genre.findOne({ where: {genre: req.params["genre"]} });
+    if (!genre) {
+      res.status(404).json({
+        success: false,
+        message: "Genre not found",
+        author: req.params["genre"],
+      });
+    } else {
+      const getBooks = await Book.findAll({ where: { GenreId: genre.id },
+      attributes: [
+          "title",
+          "AuthorId"
+      ]});
+      const allAuthors = getBooks.map((element) => element.AuthorId);
+      const getAuthors = await Author.findAll({where:{id: allAuthors}});
+      res.status(200).json({
+        message: "Success",
+        genre: req.params["genre"],
+        books: getBooks.map((element) => element.title),
+        authors: getAuthors.map((element) => element.name),
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(501).json({
+      message: "Error occurred",
+      error: error,
+    });
+  }
+};
+
 module.exports = {
   addGenre,
   deleteGenre,
   getAllGenres,
   getGenre,
+  getGenreParamGenre,
 };
