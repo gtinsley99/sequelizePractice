@@ -160,6 +160,24 @@ const updateBookByTitle = async (req, res) => {
     }
 };
 
+const getBooksByAuthor = async (req, res) => {
+    try {
+        const author = await Author.findOne({where: {name: req.body.author}});
+        let id = author.id;
+        const listAllBooks = await Book.findAll({where: {AuthorId: id}});
+        res.status(200).json({
+            message: "Success",
+            books: listAllBooks,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(501).json({
+            message: "Error occurred",
+            error: error,
+        });
+    };
+};
+
 module.exports = {
     addBook,
     listAllBooks,
@@ -167,4 +185,5 @@ module.exports = {
     deleteBookByTitle,
     updateAuthorByTitle,
     updateBookByTitle,
+    getBooksByAuthor,
 }
