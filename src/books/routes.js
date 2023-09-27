@@ -19,7 +19,7 @@ bookRouter.post("/addbook", addBook);
 bookRouter.get("/listallbooks", listAllBooks);
 
 // Request to get one book from db by title
-bookRouter.get("/findbookbytitle", findBookByTitle);
+bookRouter.get("/findbookbytitle/:title", findBookByTitle);
 
 // Request to delete book by title from db
 bookRouter.delete("/deletebookbytitle", deleteBookByTitle);
@@ -31,7 +31,7 @@ bookRouter.put("/updateauthorbytitle", updateAuthorByTitle);
 bookRouter.put("/updatebookbytitle", updateBookByTitle);
 
 // Request to get all books from an author
-bookRouter.get("/getbooksbyauthor", getBooksByAuthor);
+bookRouter.get("/getbooksbyauthor/:author", getBooksByAuthor);
 
 // Request to delete all books
 bookRouter.delete("/deleteallbooks", deleteAllBooks);

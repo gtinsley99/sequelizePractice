@@ -64,19 +64,18 @@ const deleteAuthor = async (req, res) => {
 
 const getAuthor = async (req, res) => {
   try {
-    const getAuthor = await Author.findOne({ where: { name: req.body.name } });
+    const getAuthor = await Author.findOne({ where: { name: req.params["name"] }, include: [{model: Book}] });
     if (!getAuthor) {
       res.status(404).json({
         success: false,
         message: "Author not found",
-        name: req.body.name,
+        name: req.params["name"],
       });
     } else {
-      const getBooks = await Book.findAll({ where: { AuthorId: getAuthor.id } });
       res.status(200).json({
         message: "Success",
         author: getAuthor.name,
-        books: getBooks,
+        books: getAuthor.Books.map((book) => book.title),
       });
     }
   } catch (error) {
@@ -90,7 +89,7 @@ const getAuthor = async (req, res) => {
 
 const getAuthorParamName = async (req, res) => {
     try {
-      const author = await Author.findOne({ where: {name: req.params["name"]} });
+      const author = await Author.findOne({ where: {name: req.params["name"]}, include: [{model: Book, attributes: ["title", "GenreId"]}]});
       if (!author) {
         res.status(404).json({
           success: false,
@@ -98,17 +97,12 @@ const getAuthorParamName = async (req, res) => {
           author: req.params["author"],
         });
       } else {
-        const getBooks = await Book.findAll({ where: { AuthorId: author.id },
-        attributes: [
-            "title",
-            "GenreId"
-        ]});
-        const getGenres = await Genre.findAll({where:{id: getBooks.map((element) => element.GenreId)}});
+        const genre = await Genre.findAll({where: {id: author.Books.map((book) => book.GenreId)}});
         res.status(200).json({
           message: "Success",
           author: req.params["name"],
-          books: getBooks.map((element) => element.title),
-          genres: getGenres.map((element) => element.genre),
+          books: author.Books.map((book) => book.title),
+          genres: genre.map((genreDetail) => genreDetail.genre),
         });
       }
     } catch (error) {

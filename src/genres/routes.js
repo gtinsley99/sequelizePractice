@@ -12,7 +12,7 @@ genreRouter.delete("deletegenre", deleteGenre);
 genreRouter.get("/getallgenres", getAllGenres);
 
 // Route to get one genre and related books
-genreRouter.get("/getgenre", getGenre);
+genreRouter.get("/getgenre/:genre", getGenre);
 
 // Route to find all books and authors of genre
 genreRouter.get("/getallingenre/:genre", getGenreParamGenre)
