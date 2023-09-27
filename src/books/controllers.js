@@ -57,7 +57,7 @@ const listAllBooks = async (req, res) => {
 
 const findBookByTitle = async (req, res) => {
   try {
-    const book = await Book.findOne({ where: { title: req.body.title } });
+    const book = await Book.findOne({ where: {title: req.params["title"]}});
 
     if (!book) {
       res.status(404).json({
@@ -162,7 +162,7 @@ const updateBookByTitle = async (req, res) => {
 
 const getBooksByAuthor = async (req, res) => {
   try {
-    const author = await Author.findOne({ where: { name: req.body.author } });
+    const author = await Author.findOne({ where: {name: req.params["author"]} });
     if (!author) {
       res.status(404).json({
         success: false,
