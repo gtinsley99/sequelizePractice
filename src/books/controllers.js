@@ -162,7 +162,7 @@ const updateBookByTitle = async (req, res) => {
 
 const getBooksByAuthor = async (req, res) => {
   try {
-    const author = await Author.findOne({ where: {name: req.params["author"]} });
+    const author = await Author.findOne({ where: {name: req.params["author"]}, include: [{model: Book}] });
     if (!author) {
       res.status(404).json({
         success: false,
@@ -170,10 +170,10 @@ const getBooksByAuthor = async (req, res) => {
         author: req.body.author,
       });
     } else {
-      const listAllBooks = await Book.findAll({ where: { AuthorId: author.id } });
       res.status(200).json({
         message: "Success",
-        books: listAllBooks,
+        author: req.params["author"],
+        books: author.Books.map((book) => book.title),
       });
     }
   } catch (error) {
