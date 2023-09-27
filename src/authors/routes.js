@@ -11,7 +11,7 @@ authorRouter.get("/listallauthors", listAllAuthors);
 // Request to delete author
 authorRouter.delete("/deleteauthor", deleteAuthor);
 
-// Request to find author and releated books
+// Request to find author and related books
 authorRouter.get("/getauthor/:name", getAuthor);
 
 // Request to find all books and genres of author

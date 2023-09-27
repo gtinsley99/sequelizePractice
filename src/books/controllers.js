@@ -63,7 +63,7 @@ const findBookByTitle = async (req, res) => {
       res.status(404).json({
         success: false,
         message: "Book not found",
-        title: req.body.title,
+        title: req.params["title"],
       });
     } else {
       res.status(200).json({
@@ -167,7 +167,7 @@ const getBooksByAuthor = async (req, res) => {
       res.status(404).json({
         success: false,
         message: "Author not found",
-        author: req.body.author,
+        author: req.params["author"],
       });
     } else {
       res.status(200).json({
