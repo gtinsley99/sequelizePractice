@@ -12,9 +12,9 @@ authorRouter.get("/listallauthors", listAllAuthors);
 authorRouter.delete("/deleteauthor", deleteAuthor);
 
 // Request to find author and releated books
-authorRouter.get("/getauthor", getAuthor);
+authorRouter.get("/getauthor/:name", getAuthor);
 
 // Request to find all books and genres of author
-authorRouter.get("/getauthor/:name", getAuthorParamName);
+authorRouter.get("/getallauthor/:name", getAuthorParamName);
 
 module.exports = authorRouter;

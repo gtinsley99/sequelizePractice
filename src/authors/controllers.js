@@ -64,7 +64,7 @@ const deleteAuthor = async (req, res) => {
 
 const getAuthor = async (req, res) => {
   try {
-    const getAuthor = await Author.findOne({ where: { name: req.body.name } });
+    const getAuthor = await Author.findOne({ where: { name: req.params["name"] } });
     if (!getAuthor) {
       res.status(404).json({
         success: false,
