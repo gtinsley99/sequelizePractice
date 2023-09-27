@@ -64,21 +64,20 @@ const getAllGenres = async (req, res) => {
 
 const getGenre = async (req, res) => {
   try {
-    const getGenre = await Genre.findOne({ where: { genre: req.params["genre"]} });
+    const getGenre = await Genre.findOne({ where: { genre: req.params["genre"]}, include: [{model: Book}] });
     if (!getGenre) {
       res.status(404).json({
         success: false,
         message: "Genre not found",
-        genre: req.body.genre,
+        genre: req.params["genre"],
       });
     } else {
-      const getBooks = await Book.findAll({ where: { GenreId: getGenre.id } });
       res.status(200).json({
         message: "Success",
-        genre: getGenre,
-        books: getBooks,
+        genre: req.params["genre"],
+        books: getGenre.Books.map((book) => book.title),
       });
-    }
+    };
   } catch (error) {
     console.log(error);
     res.status(501).json({
@@ -90,7 +89,7 @@ const getGenre = async (req, res) => {
 
 const getGenreParamGenre = async (req, res) => {
   try {
-    const genre = await Genre.findOne({ where: {genre: req.params["genre"]} });
+    const genre = await Genre.findOne({ where: {genre: req.params["genre"]}, include: [{model: Book, attributes: ["title", "AuthorId"]}] });
     if (!genre) {
       res.status(404).json({
         success: false,
@@ -98,17 +97,12 @@ const getGenreParamGenre = async (req, res) => {
         author: req.params["genre"],
       });
     } else {
-      const getBooks = await Book.findAll({ where: { GenreId: genre.id },
-      attributes: [
-          "title",
-          "AuthorId"
-      ]});
-      const getAuthors = await Author.findAll({where:{id: getBooks.map((element) => element.AuthorId)}});
+      const getAuthors = await Author.findAll({where:{id: genre.Books.map((element) => element.AuthorId)}});
       res.status(200).json({
         message: "Success",
         genre: req.params["genre"],
-        books: getBooks.map((element) => element.title),
-        authors: getAuthors.map((element) => element.name),
+        books: genre.Books.map((book) => book.title),
+        authors: getAuthors.map((author) => author.name),
       });
     }
   } catch (error) {
