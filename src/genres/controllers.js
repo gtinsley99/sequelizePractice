@@ -64,7 +64,7 @@ const getAllGenres = async (req, res) => {
 
 const getGenre = async (req, res) => {
   try {
-    const getGenre = await Genre.findOne({ where: { genre: req.body.genre } });
+    const getGenre = await Genre.findOne({ where: { genre: req.params["genre"]} });
     if (!getGenre) {
       res.status(404).json({
         success: false,
