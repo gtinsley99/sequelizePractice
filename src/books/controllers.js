@@ -202,22 +202,20 @@ const deleteAllBooks = async (req, res) => {
 
 const getBookParamTitle =  async (req, res) => {
   try {
-    const books = await Book.findOne({ where: {title: req.params["title"]} });
+    const books = await Book.findOne({where: {title: req.params["title"]}, include: [{model: Author},{model: Genre}]});
     if (!books) {
       res.status(404).json({
         success: false,
         message: "Book not found",
         author: req.params["title"],
       });
+      console.log(books);
     } else {
-      const getAuthor = await Author.findOne({ where: { id: books.AuthorId } });
-      let genreId = books.GenreId;
-      const getGenre = await Genre.findOne({where: {id: genreId}});
       res.status(200).json({
         message: "Success",
         book: req.params["title"],
-        author: getAuthor.name,
-        genre: getGenre.genre,
+        author: books.Author.name,
+        genre: books.Genre.genre,
       });
     }
   } catch (error) {
